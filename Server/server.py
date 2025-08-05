@@ -30,25 +30,32 @@ while True:
     if not data:
         break
 
-    line = data.decode().strip()
+    lines = data.decode().strip().split("\n")
 
-    try:
-        values = list(map(float, line.split(",")))
-        if len(values) != len(feature_names):
-            print(f"Ignored line: invalid number of values ({len(values)})")
+    for line in lines:
+        try:
+            values = list(map(float, line.strip().split(",")))
+            if len(values) != len(feature_names):
+                print(f"Ignored line: invalid number of values ({len(values)}) → {line}")
+                continue
+
+            row = dict(zip(feature_names, values))
+            #is_anomaly = model.predict(row)
+
+            score = model.anomaly_score(row)
+
+            if score < -0.05:
+                print(f"❌ Anomaly detected (score={score:.4f}) →", row)
+            elif score < 0.0:
+                print(f"⚠️ Borderline (score={score:.4f}) →", row)
+            else:
+                print(f"✅ Normal (score={score:.4f}) →", row)
+
+        except Exception as e:
+            print(f"Error during parsing or prediction for line: {line} → {e}")
             continue
 
-        row = dict(zip(feature_names, values))
-        is_anomaly = model.predict(row)
 
-        if is_anomaly:
-            print("Anomaly detected:", row)
-        else:
-            print("No anomaly detected:")
-
-    except Exception as e:
-        print("Error during parsing or prediction:", e)
-        continue
 
 # Close connections
 conn.close()

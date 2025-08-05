@@ -43,3 +43,22 @@ class AnomaliesDetection:
 
         prediction = self.model.predict(df)[0]
         return prediction == -1  # -1 = anomalie, 1 = normal
+
+    def anomaly_score(self, row):
+        """
+        Returns the anomaly score from IsolationForest.
+        Higher score = more normal. Lower score = more anomalous.
+        """
+        if isinstance(row, dict):
+            df = pd.DataFrame([row])
+        elif isinstance(row, pd.Series):
+            df = row.to_frame().T
+        elif isinstance(row, pd.DataFrame):
+            df = row
+        else:
+            raise ValueError("Unsupported input format.")
+
+        if self.feature_names:
+            df = df[self.feature_names]
+
+        return self.model.decision_function(df)[0]
