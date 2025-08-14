@@ -22,7 +22,7 @@ print(f"Client connected from {addr}")
 
 
 # Expected feature names in the incoming data
-feature_names = ["accel_x", "accel_y", "accel_z", "gyro_x", "gyro_y", "gyro_z", "gforce"]
+feature_names = ["accel_x", "accel_y", "accel_z", "gyro_x", "gyro_y", "gyro_z", "gforce", "mic"]
 
 # Handle incoming data and detect anomalies
 while True:

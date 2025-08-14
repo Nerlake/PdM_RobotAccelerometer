@@ -9,7 +9,7 @@ os.makedirs("data", exist_ok=True)
 
 if not os.path.exists(csv_path):
     with open(csv_path, "w") as f:
-        f.write("accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,gforce\n")
+        f.write("accel_x,accel_y,accel_z,gyro_x,gyro_y,gyro_z,gforce,mic\n")
 
 server_socket = socket.socket()
 server_socket.bind((host, port))
